@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from playstore.views import adminRegister
 
 urlpatterns = [
+    # Go to admin page
     path('admin/', admin.site.urls),
-    path('admin-register/',include('playstore.appurls')),
+    # Go to admin register page
+    path('admin-login/',include('playstore.appurls')),
+    # Go to user page
+    path('',include('playUsers.appurls')),
 ]

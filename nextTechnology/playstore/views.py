@@ -3,11 +3,14 @@ from .models import AppAdmin
 import play_scraper
 from django.contrib import messages
 
+# Admin user and password
+# It should be taken from json 
 adminUser='anonymous'
 adminPass='securepassword@123'
 
 # Taking required information from the details
 def details(request):
+    # If we make a search request and 
     if 'Search' in request.GET:
         query=request.GET['Search']
         appDetails=play_scraper.search(query)[0]
@@ -24,9 +27,10 @@ def details(request):
 
 
 # Create your views here.
-
-def adminPage(request,user):  
-        app=details(request)
+def adminPage(request):
+    # If session has a user and if it is admin then return the admin page
+    if request.session.has_key('username') and request.session['username']==adminUser:
+        app=details(request)         
         if request.method=='POST':
             pointfromPage=request.POST['points']
             categoryfromPage=request.POST['category']
@@ -36,9 +40,8 @@ def adminPage(request,user):
             passToHtml={
                     'title':'Admin Home',
                     'app_status': False,
-                    'path': f'/admin-register/admin/{user}',
                 }
-        else:          
+        else:         
             if app:
                 passToHtml={
                     'title':'Admin Home',
@@ -46,18 +49,21 @@ def adminPage(request,user):
                     'app_id': app[1],
                     'app_icon':app[2],
                     'app_status':True,
-                    'path': f'/admin-register/admin/{user}',
                     'categories':app[4],
                 }
             else:
                 passToHtml={
                     'title':'Admin Home',
                     'app_status': False,
-                    'path': f'/admin-register/admin/{user}',
                 }
         return render(request,'adminPage.html',passToHtml)
+    return HttpResponse("<h1 style='margin:50px; font-size:80px;'><b>404 Not Found</b></h1>")
 
+
+
+# If anyone searches for apps page then redirect him here
 def apps(request):
+    if request.session.has_key('username') and request.session['username']==adminUser:
         app_list=AppAdmin.objects.all()
         if request.method=='POST':
             cuurentappID=request.POST['app']
@@ -65,17 +71,47 @@ def apps(request):
             deleteObject.delete()
         passToHtml={
             'title':'Added Apps',
-            'app_list':app_list,
-            'path': f'/admin-register/admin/{adminUser}',
-            }
+            'app_list':app_list,            }
         return render(request,'apps.html',passToHtml)
+    else:
+        return HttpResponse("<h1 style='margin:50px; font-size:80px;'><b>404 Not Found</b></h1>")
 
-def adminRegister(request):
-    if request.method=='POST':
-        inputUser=request.POST['username']
-        inputPass=request.POST['password']
-        if inputUser==adminUser and inputPass==adminPass:
-            return redirect(f'admin/{adminUser}')
-        else:
-            messages.warning(request,'Not found')
-    return render(request,'adminRegister.html')
+
+
+
+
+
+
+# If login page is requested then it will come here
+def adminLogin(request):
+    # If he is already logged in don't ask him again 
+    if request.session.has_key('username'):
+        return redirect('admin/')
+    else:
+        if request.method=='POST':
+            inputUser=request.POST['username']
+            inputPass=request.POST['password']
+            # If that is same as the admin user then redirect him to login page
+            if inputUser==adminUser and inputPass==adminPass:
+                request.session['username']=adminUser
+                return redirect('admin/')
+            # else send a warning flash-message that user Not found 
+            else:
+                messages.warning(request,'Not found')
+        return render(request,'adminLogin.html')
+
+
+
+
+
+
+
+
+
+# If log-out is requested then it will delete the session variable and redirects to login page
+def logout(request):
+    try:
+        del request.session['username']
+        return redirect('admin-login')
+    except:
+        return HttpResponse("<h1 style='margin:50px; font-size:80px;'><b>404 Not Found</b></h1>")

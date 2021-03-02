@@ -1,52 +1,71 @@
 {% extends 'base.html' %}
 {% block content %}
+
+
+<!-- Navigate to apps page and logout -->
 <div class="container main_container">
     <div class="row justify-content-center">
         <div class="col-6 col-md-2 sidebar mb-5">
-            <button class="btn btn-info col-12 mb-2"><a href="{% url 'playstore-apps' %}" class="text-white">Added Apps</a></button>
-            <button class="btn btn-info col-12 mb-2"><a href="{% url 'admin-register' %}" class="text-white">Logout</a></button>
+            <button class="btn btn-info col-12 mb-2"><a href="{% url 'admin-apps' %}" class="text-white">Added
+                    Apps</a></button>
+            <button class="btn btn-info col-12 mb-2"><a href="{% url 'admin-logout' %}"
+                    class="text-white">Logout</a></button>
         </div>
     </div>
-            <div class="col-11 col-md-12 mainbar mx-autos">
-                <div class="container">
-                        <form action="{{path}}" method="GET" class="form-group justify-content-center row">
-                            {% csrf_token %}
-                            <input type="search" name="Search" class="md-auto col-8 col-md-4 mx-2 rounded mt-2" placeholder="Search for apps">
-                            <button type="submit" class="btn btn-primary col-4 col-md-2 mt-2">Search</button>
-                        </form>
-                </div>
-            </div>
-                {% if app_status %}
-                <div class="container mt-5">
-                    <div class="row justify-content-center ">
-                        <div class="col-5 col-sm-1 mb-5 " >
-                            <img src="{{app_icon}}" class="img img-fluid rounded" > 
-                        </div>
-                    </div>
-                    <div class="row justify-content-center mb-2 text-white">
-                        <span class="h6 p-2 col-8 col-md-2 border bg-success rounded text-center mx-2">{{app_name}}</span>
-                        <span class="h6 p-2 col-8 col-md-2 border bg-warning rounded text-center mx-2">{{app_id}}</span>
-                        </div>
-                        <form action="" method="POST" class="form-group ">
-                            {% csrf_token %}
-                            <div class="row justify-content-center p-2 h6 col-10 col-md-2 mx-auto ">
-                                <select class="form-select border border-primary" name="category">
-                                    <option selected class="text-muted col-2" value="Other">Category</option>
-                                    {%for category in categories %}
-                                    <option  class="text-muted col-2">{{category}}</option> 
-                                    {% endfor %}
-                                  </select>
-                            </div>
-                            <div class="row justify-content-center p-2 h6 ">
-                                <input type="number" name="points" id="" placeholder="Add Points" class="col-8 col-md-3 mt-5 p-2 rounded text-center">
-                            </div>
-                            <div class="justify-content-center row">
-                                <button type="submit" class="col-6 col-md-2 btn btn-dark text-white">Add App</button>
-                            </div>
-                        </form>
-                </div>
-                {% endif %}
-            </div>
+
+
+
+    <!-- Makes a GET request to search the app from playstore -->
+    <div class="col-11 col-md-12 mainbar mx-autos">
+        <div class="container">
+            <form action="{{path}}" method="GET" class="form-group justify-content-center row">
+                {% csrf_token %}
+                <input type="search" name="Search" class="md-auto col-8 col-md-4 mx-2 rounded mt-2"
+                    placeholder="Search for apps">
+                <button type="submit" class="btn btn-primary col-4 col-md-2 mt-2">Search</button>
+            </form>
         </div>
     </div>
+
+
+    <!--  If any app is matched then it is displayed below -->
+    {% if app_status %}
+    <div class="container mt-5">
+        <div class="row justify-content-center ">
+            <div class="col-5 col-sm-1 mb-5 ">
+                <img src="{{app_icon}}" class="img img-fluid rounded">
+            </div>
+        </div>
+
+
+        <!-- Shows the app name and and id -->
+        <div class="row justify-content-center mb-2 text-white">
+            <span class="h6 p-2 col-8 col-md-2 border bg-success rounded text-center mx-2">{{app_name}}</span>
+            <span class="h6 p-2 col-8 col-md-2 border bg-warning rounded text-center mx-2">{{app_id}}</span>
+        </div>
+
+        <!-- Form to submit category and points to the db -->
+        <form action="" method="POST" class="form-group ">
+            {% csrf_token %}
+            <div class="row justify-content-center p-2 h6 col-10 col-md-2 mx-auto ">
+                <select class="form-select border border-primary" name="category">
+                    <option selected class="text-muted col-2" value="Other">Category</option>
+                    {%for category in categories %}
+                    <option class="text-muted col-2">{{category}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row justify-content-center p-2 h6 ">
+                <input type="number" name="points" id="" placeholder="Add Points"
+                    class="col-8 col-md-3 mt-5 p-2 rounded text-center">
+            </div>
+            <div class="justify-content-center row">
+                <button type="submit" class="col-6 col-md-2 btn btn-dark text-white">Add App</button>
+            </div>
+        </form> 
+    </div>
+    {% endif %}
+
+
+</div>
 {% endblock content %}

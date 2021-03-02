@@ -11,46 +11,29 @@
     <!-- FontAwesone -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     
-    <!-- Custom css -->
-    <style>
-        .sidebar button a
-        {
-            text-decoration: none;
-        }
-        .sidebar
-        {
-            border-left: 2px solid palevioletred;
-            border-right: 2px solid palevioletred;
-        }
-        #icon
-        {
-            border-left: 10px;
-        }
-    </style>
+
 
     <title>{{title}}</title>
 </head>
         
-<body class="mb-5">
-    <div class="container-fluid p-5 mb-5 text-center bg-secondary text-white ">
-        <div class="h1">Welcome Admin!</div>
-        <div class="h5">Time to take Control.</div>
+<body class="mt-5">
+
+{% for app in applist %}
+    <div class="container">
+        <div class="row justify-content-center border border-dark rounded p-2 mx-2 mb-2 col-md-4" style="background-color: powderblue;">
+         <div class="col-4 col-md-4 text-center mx-0 ">
+                <img src="{{app.iconLink}}" alt="{{app.name}}" class="col-12 col-md-8 my-auto">
+             </div>
+             <div class="col-6 col-md-6 my-auto">
+                 <div class="h6">{{app.name|capfirst}}</div>
+                 <div class="h6"><i class='fas fa-coins mx-2'></i>{{app.points}}</div>
+                 <div class="h6">{{app.category}}</div>
+             </div>
+           
+        </div>
+
     </div>
-    <!-- Message will be displayed when app is created -->
-    <div class=" col-8 col-md-5 container text-center">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success">{{message}}</div>
-        {% endfor %}
-        {% endif %}
-    </div>
-   
-{% block content %}
-
- <!-- Dynamic data from other pages comes here  -->
-
- {% endblock content%}
-
+ {% endfor %}
 </body>
 
 
