@@ -16,7 +16,7 @@
 
 <body class="text-center">
 
-    <div class="container-fluid mt-3" >
+    <div class="container-fluid mt-3">
         <div class=" col-8 col-md-4 container text-center">
             {%if form.errors %}
             <div class="alert alert-danger h6">
@@ -35,28 +35,29 @@
             {% endfor %}
         </div>
         {% endif %}
-    <!-- Form to enter username and password -->
+        <!-- Form to enter username and password -->
         <div class="row  mx-auto justify-content-center" style="margin-top:50px;">
             <form class="col-8 col-sm-3" method='POST'>
                 <!-- csrf_token  to prevent the cross site request forgery -->
-            {% csrf_token %}
-           
-              <h1 class="h2  mt-4 mb-5">Login</h1>
-              <div class="mb-5 ">
-                  <input type="text" name='username' class="form-control" placeholder="Username" required autofocus>
-              </div>
-             
-              <div class="mb-5 ">
+                {% csrf_token %}
 
-              <input type="password" name='password' class="form-control" placeholder="Password" required>
-              <h6 class="mt-2">Need an account?  <a href="{% url 'user-register' %}" style="text-decoration: none;">Sign Up</a></h6>
-              </div>
-              
-              <button class="w-10 btn btn-lg btn-primary" type="submit">Sign In</button>
+                <h1 class="h2  mt-4 mb-5">Login</h1>
+                <div class="mb-5 ">
+                    <input type="text" name='username' class="form-control" placeholder="Username" required autofocus>
+                </div>
 
-            </form> 
+                <div class="mb-5 ">
+
+                    <input type="password" name='password' class="form-control" placeholder="Password" required>
+                    <h6 class="mt-2">Need an account? <a href="{% url 'user-register' %}"
+                            style="text-decoration: none;">Sign Up</a></h6>
+                </div>
+
+                <button class="w-10 btn btn-lg btn-primary" type="submit">Sign In</button>
+
+            </form>
         </div>
-        
+
     </div>
 </body>
 

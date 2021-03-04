@@ -39,13 +39,16 @@ def adminPage(request):
     # take the details
     app=details(request) 
     # If session has a user and if it is admin then return the admin page
-    if request.session.has_key('username') and request.session['username']==adminUser:         
+    if request.session.has_key('username') and request.session['username']==adminUser:
+        # If request has made to add app         
         if request.method=='POST':
             pointfromPage=request.POST['points']
             categoryfromPage=request.POST['category']
             currdownloadLink='https://play.google.com'+app[3]
             createObject=AppAdmin(name=app[0],appID=app[1],iconLink=app[2],downloadLink=currdownloadLink,category=categoryfromPage,points=pointfromPage)  
+            # creates an app object and saves it
             createObject.save()
+            # sends the success message
             messages.success(request,'App added successfully!!')
             passToHtml={
                     'title':'Admin Home',

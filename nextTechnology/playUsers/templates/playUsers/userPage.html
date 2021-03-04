@@ -1,42 +1,42 @@
 {% extends 'playUsers/baseUser.html' %}
 {% block content %}
-      
 
-   <div class="container border border-dark p-2 bg-secondary mt-5 col-12 col-lg-6">
-        <div class="row">
-            <div class="col-4 ">
-                <img src="{{currapp.iconLink}}" alt="{{currapp.name}}" class="mr-2" >
-            </div>
-            <div class="col-8">
-                <a href="{{currapp.downloadLink}}" target="_blank" style="text-decoration: none;">
-                    <div class="btn btn-success col-8 mx-auto mb-2 mt-3">
-                        <h6>Download  <i class="fa fa-link" aria-hidden="true"></i></h6>
-                    </div>
-                    <br>
-                </a>
-                <div class="btn btn-warning mb-2">
-                    <i class='fas fa-coins'></i>  {{currapp.points}}
-                </div>
-            </div>
-            
+
+<div class="container border border-dark p-2 bg-secondary mt-5 col-12 col-lg-6">
+    <div class="row">
+        <div class="col-4 ">
+            <img src="{{currapp.iconLink}}" alt="{{currapp.name}}" class="mr-2">
         </div>
+        <div class="col-8">
+            <a href="{{currapp.downloadLink}}" target="_blank" style="text-decoration: none;">
+                <div class="btn btn-success col-8 mx-auto mb-2 mt-3">
+                    <h6>Download <i class="fa fa-link" aria-hidden="true"></i></h6>
+                </div>
+                <br>
+            </a>
+            <div class="btn btn-warning mb-2">
+                <i class='fas fa-coins'></i> {{currapp.points}}
+            </div>
+        </div>
+
     </div>
-    <form class="form-group " method="POST">
-        {% csrf_token %}
-          <div class="container mt-5 col-12 col-lg-6 justify-content-center" >
+</div>
+<form class="form-group " method="POST">
+    {% csrf_token %}
+    <div class="container mt-5 col-12 col-lg-6 justify-content-center">
         <div class="drag-area col-12 border border-primary rounded " style="height: 200px;">
             <div class="icon mt-4"><i class="fas fa-cloud-upload-alt"></i></div>
-            <header >Drag & Drop to Upload File</header>
+            <header>Drag & Drop to Upload File</header>
             <span>OR</span><br>
-            <input type="number" name='point' value='{{currapp.points}}' hidden >
-            <input type="number" name='task' value='{{currapp.tasks}}'  hidden >
+            <input type="number" name='point' value='{{currapp.points}}' hidden>
+            <input type="number" name='task' value='{{currapp.tasks}}' hidden>
             <input type="text" name="downloaded" value='{{currapp.name}}' hidden>
             <input type="text" name="curruser" value='{{user}}' hidden>
             <div class="col-8 col-sm-6 mx-auto">
                 <input type="file" class="form-control" name="file" required>
             </div>
         </div>
-        </div>
-        <button class="mx-auto btn btn-danger mt-3">Complete Task</button>
-    </form>
+    </div>
+    <button class="mx-auto btn btn-danger mt-3">Complete Task</button>
+</form>
 {% endblock content %}
