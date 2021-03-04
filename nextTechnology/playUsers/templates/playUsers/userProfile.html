@@ -1,0 +1,27 @@
+{% extends 'playUsers/baseUser.html' %}
+{% block content %}
+{% if messages %}
+
+<div class="container col-10 justify-content-center  mt-5 p-5 text-white">
+    <div class=" col-8 col-md-5 container text-center mb-2">
+        {% for message in messages %}
+        <div class="alert alert-success">{{message}}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="card col-12 col-lg-4 mx-auto mt-5 text-white" style="background-color: #469a43">
+        <h2 class="card-title my-auto">{{user.username | capfirst}} </h2>
+         <hr style="height: 4px; color: black;">
+         <h5>Points Earned : <span class="text-warning"> <i class='fas fa-coins mx-2 mt-2'></i>{{user.profile.points}}</span></h5>
+         <h5>Tasks Done : <span class="text-info"><i class="fa fa-tasks mx-2 mt-2" aria-hidden="true"></i>{{user.profile.tasks}}</span></h5>
+         <form action="{% url 'user-profile' %}" method="POST" class="form-group ">
+             <div class="col-5 mx-auto mt-5 mb-3">
+                 {% csrf_token %}
+                 <input type="text" class="visually-hidden" name=username value="{{user}}">
+                 <input type="password" class="form-control col-6" name='newpassword' placeholder="New Password" minlength="8">
+             </div>
+            <button class="btn btn-danger mb-3" type="submit">Change</button>
+         </form>
+        </div>
+      </div>
+{% endblock content %}

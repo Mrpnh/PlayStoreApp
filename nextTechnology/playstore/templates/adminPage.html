@@ -16,7 +16,7 @@
 
 
     <!-- Makes a GET request to search the app from playstore -->
-    <div class="col-11 col-md-12 mainbar mx-autos">
+    <div class="col-11 col-md-12 mainbar mx-auto">
         <div class="container">
             <form action="{{path}}" method="GET" class="form-group justify-content-center row">
                 {% csrf_token %}
@@ -48,7 +48,7 @@
         <form action="" method="POST" class="form-group ">
             {% csrf_token %}
             <div class="row justify-content-center p-2 h6 col-10 col-md-2 mx-auto ">
-                <select class="form-select border border-primary" name="category">
+                <select class="form-select border border-primary col-2" name="category">
                     <option selected class="text-muted col-2" value="Other">Category</option>
                     {%for category in categories %}
                     <option class="text-muted col-2">{{category}}</option>

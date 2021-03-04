@@ -8,11 +8,16 @@ from django.contrib import messages
 adminUser='anonymous'
 adminPass='securepassword@123'
 
+
+
+
+
 # Taking required information from the details
 def details(request):
     # If we make a search request and 
     if 'Search' in request.GET:
         query=request.GET['Search']
+        # Searches using play scraper module
         appDetails=play_scraper.search(query)[0]
         categories=list(play_scraper.categories().keys())
         if appDetails:
@@ -26,22 +31,28 @@ def details(request):
     return False
 
 
+
+
+
 # Create your views here.
 def adminPage(request):
+    # take the details
+    app=details(request) 
     # If session has a user and if it is admin then return the admin page
-    if request.session.has_key('username') and request.session['username']==adminUser:
-        app=details(request)         
+    if request.session.has_key('username') and request.session['username']==adminUser:         
         if request.method=='POST':
             pointfromPage=request.POST['points']
             categoryfromPage=request.POST['category']
-            createObject=AppAdmin(name=app[0],appID=app[1],iconLink=app[2],category=categoryfromPage,points=pointfromPage)  
+            currdownloadLink='https://play.google.com'+app[3]
+            createObject=AppAdmin(name=app[0],appID=app[1],iconLink=app[2],downloadLink=currdownloadLink,category=categoryfromPage,points=pointfromPage)  
             createObject.save()
             messages.success(request,'App added successfully!!')
             passToHtml={
                     'title':'Admin Home',
                     'app_status': False,
                 }
-        else:         
+        else:     
+            # If app returns list then pass it to admin page   
             if app:
                 passToHtml={
                     'title':'Admin Home',
@@ -57,24 +68,38 @@ def adminPage(request):
                     'app_status': False,
                 }
         return render(request,'adminPage.html',passToHtml)
-    return HttpResponse("<h1 style='margin:50px; font-size:80px;'><b>404 Not Found</b></h1>")
+    return redirect('admin-login')
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 # If anyone searches for apps page then redirect him here
 def apps(request):
+    #If the user in session then only give him this page
     if request.session.has_key('username') and request.session['username']==adminUser:
+        # Take all object and display it
         app_list=AppAdmin.objects.all()
+        # Delete if a POST request comes
         if request.method=='POST':
-            cuurentappID=request.POST['app']
-            deleteObject=AppAdmin.objects.get(id=cuurentappID)
+            currentappID=request.POST['app']
+            deleteObject=AppAdmin.objects.get(id=currentappID)
             deleteObject.delete()
         passToHtml={
             'title':'Added Apps',
             'app_list':app_list,            }
         return render(request,'apps.html',passToHtml)
     else:
-        return HttpResponse("<h1 style='margin:50px; font-size:80px;'><b>404 Not Found</b></h1>")
+        return redirect('admin-login')
 
 
 
