@@ -45,15 +45,22 @@ def adminPage(request):
             pointfromPage=request.POST['points']
             categoryfromPage=request.POST['category']
             currdownloadLink='https://play.google.com'+app[3]
-            createObject=AppAdmin(name=app[0],appID=app[1],iconLink=app[2],downloadLink=currdownloadLink,category=categoryfromPage,points=pointfromPage)  
             # creates an app object and saves it
-            createObject.save()
-            # sends the success message
-            messages.success(request,'App added successfully!!')
-            passToHtml={
-                    'title':'Admin Home',
-                    'app_status': False,
-                }
+            if AppAdmin.objects.filter(name=app[0]).exists():
+                messages.warning(request,'App already exists!!')
+                passToHtml={
+                      'title':'Admin Home',
+                      'app_status': False,
+                    }
+            else:
+                createObject=AppAdmin(name=app[0],appID=app[1],iconLink=app[2],downloadLink=currdownloadLink,category=categoryfromPage,points=pointfromPage)  
+                createObject.save()
+                # sends the success message
+                messages.success(request,'App added successfully!!')
+                passToHtml={
+                      'title':'Admin Home',
+                      'app_status': False,
+                    }
         else:     
             # If app returns list then pass it to admin page   
             if app:
