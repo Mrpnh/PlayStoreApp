@@ -6,6 +6,8 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from playstore.models import AppAdmin
 
+
+
 # New User registers here
 def userRegister(request):
     # If a request is POSTED
