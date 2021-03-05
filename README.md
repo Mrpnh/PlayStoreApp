@@ -9,10 +9,15 @@
 ### Admin side has following features:
 
 ! [Admin can add any app from the playstore]
+
 > It has a search bar where you can search and get your desired apps
+
 > Add points to them and publish the app on website
+
 > You can also delete the app just by clicking on the apps cross mark in the added apps section
+
 > The admin cannot add duplicate apps. 
+
 > If you want to update the points and category of a app just delete that app from added app and add the same app again
 
 ### User side has following features:
