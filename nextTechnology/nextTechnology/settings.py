@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     # custom apps
     'playstore.apps.PlaystoreConfig',
     'playUsers.apps.PlayusersConfig',
+    # rest framwork Django 
+    'rest_framework',
+    # Authentication system
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +77,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'nextTechnology.wsgi.application'
+
+
+# REST Framework
+# Specifying which authentication and permission classes we are using
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+}
 
 
 # Database

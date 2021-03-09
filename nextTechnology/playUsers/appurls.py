@@ -1,6 +1,7 @@
 from  django.urls import path
 from .views import *
 from django.contrib.auth import views as auth_views
+from .api.views import apiAppView
 
 urlpatterns=[
     # registers the user
@@ -15,4 +16,6 @@ urlpatterns=[
     path('userprofile/',userProfile,name='user-profile'),
     # go to user page
     path('userhome/<int:currid>/',userPage,name='user-page'),
+    #API for user
+    path('api/',apiAppView,name='user-api'),
 ]

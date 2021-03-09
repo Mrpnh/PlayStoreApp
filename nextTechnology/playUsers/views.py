@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 from django.contrib import messages
 from playstore.models import AppAdmin
+from rest_framework.authtoken.models import Token
 
 
 
@@ -23,6 +24,8 @@ def userRegister(request):
             pro=Profile(user=curruser)
             # saves the profile
             pro.save()
+            # Create the token for that perticular object
+            Token.objects.create(user=curruser) 
             # Sends the success message and redirects to login page
             messages.success(request,'Account Created Successfully!!')
             return redirect('user-login')
@@ -46,10 +49,15 @@ def userHome(request):
     currUser=User.objects.get(username=request.user)
     # gets the profile page
     pro=Profile.objects.get(user=currUser)
+    # Gets the current user
+    curruser=User.objects.get(username=request.user)
+    # Gets the token of that user
+    token=Token.objects.filter(user=curruser).first()
     passtoHTML={
         'title':'Home',
         'applist':applist,
         'downloadedApps':pro.downloaded,
+        'token':token,
     }
     return render(request,'playUsers/userHome.html',passtoHTML)
 
@@ -64,6 +72,10 @@ def userHome(request):
 @login_required
 # User profile page
 def userProfile(request):
+    # Gets the current user
+    curruser=User.objects.get(username=request.user)
+    # gets the token of that user
+    token=Token.objects.filter(user=curruser).first()
     # If a request is made to change the password
     if request.method=='POST':
         currentUsername=request.POST['username']
@@ -74,9 +86,10 @@ def userProfile(request):
         # save the password
         currentUser.save()
         # sends the success message and redirects to login-page
+        
         messages.success(request,'Password Changed Successfully!! Login Again')
         return redirect('user-login')
-    return render(request,'playUsers/userProfile.html',{'title':'Profile'})
+    return render(request,'playUsers/userProfile.html',{'title':'Profile','token':token,})
 
 
 
